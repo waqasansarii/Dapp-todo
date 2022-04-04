@@ -63,7 +63,7 @@ function App() {
 
   return (
     <div className="App">
-      <p>{acount}</p>
+      {/* <p>{acount}</p> */}
       <div className="todoContent">
         <h1>Todo Dapp</h1>
         <div className="todoSection">
