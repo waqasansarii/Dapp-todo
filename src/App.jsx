@@ -19,10 +19,15 @@ function App() {
   }, [])
 
   const loadBlockChainData = async () => {
-    const accounts = await web3.eth.getAccounts()
+    if(window.ethereum){
+      const account = await window.ethereum.request({method : 'eth_requestAccounts'})
+      setAcount(account[0])
+    }else{
+      alert('please install metamast')
+    }
+    // const accounts = await web3.eth.getAccounts()
 
     //  console.log(taskCount)
-    setAcount(accounts[0])
   }
 
   const getTaskFromBlockChain = async () => {
@@ -42,9 +47,11 @@ function App() {
   }
 
   const handleAddTodo = () => {
-    setLoading(true)
-    const taskContract = new web3.eth.Contract(abi, contractAddress)
-    taskContract.methods
+    if(acount !==null){
+
+      setLoading(true)
+      const taskContract = new web3.eth.Contract(abi, contractAddress)
+      taskContract.methods
       .createTask(todoVal)
       .send({ from: acount })
       .once('receipt', (e) => {
@@ -56,9 +63,12 @@ function App() {
         console.log(rs)
         setTodoVal('')
         setLoading(false)
-
+        
         getTaskFromBlockChain()
       })
+    }else{
+      alert('please connect metamask first')
+    }
   }
 
   return (
